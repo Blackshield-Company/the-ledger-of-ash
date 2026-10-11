@@ -14,7 +14,8 @@ internal static class ModInfo
     public const string Description = "The Ledger of Ash: a Daedric relic hunt across three holds, three choices and enhanced artifacts.";
 
     const int APlayer = 0, AAulus = 1, APage = 2, ALoc1 = 3, AMark1 = 4, AThrall1 = 5, AShard1 = 6, ALoc2 = 7, AMark2 = 8, AThrall2 = 9, AShard2 = 10,
-        ALoc3 = 11, AMark3 = 12, AThrall3 = 13, AShard3 = 14, ACollectorMarker = 15, ACollector = 16;
+        ALoc3 = 11, AMark3 = 12, AThrall3 = 13, AShard3 = 14, ACollectorMarker = 15, ACollector = 16,
+        ABoss1 = 17, ABoss2 = 18, ABoss3 = 19;
     const int IPlayer = 0, IMarker = 1, IAulus = 2;
 
     public static void Build(Kit k)
@@ -118,14 +119,38 @@ internal static class ModInfo
         main.Aliases.Add(Created(AShard3, "Shard3", shard3.FormKey, AThrall3, true, Level.Easy, QuestAlias.Flag.QuestObject));
         main.Aliases.Add(Forced(ACollectorMarker, "CollectorMarker", RiftenStablesMapMarker));
         main.Aliases.Add(Created(ACollector, "Collector", collector.FormKey, ACollectorMarker, false, Level.Hard, QuestAlias.Flag.InitiallyDisabled | QuestAlias.Flag.StoresText));
+        // 0.1.1: each shard dungeon's boss spot (optional); the script moves the thralls there.
+        main.Aliases.Add(new QuestAlias
+        {
+            ID = ABoss1, Type = QuestAlias.TypeEnum.Reference, Name = "Boss1",
+            Flags = QuestAlias.Flag.Optional | QuestAlias.Flag.AllowDead | QuestAlias.Flag.AllowDisabled,
+            Location = new LocationAliasReference { AliasID = ALoc1, RefType = N<ILocationReferenceTypeGetter>(RefTypeBoss) },
+        });
+        main.Aliases.Add(new QuestAlias
+        {
+            ID = ABoss2, Type = QuestAlias.TypeEnum.Reference, Name = "Boss2",
+            Flags = QuestAlias.Flag.Optional | QuestAlias.Flag.AllowDead | QuestAlias.Flag.AllowDisabled,
+            Location = new LocationAliasReference { AliasID = ALoc2, RefType = N<ILocationReferenceTypeGetter>(RefTypeBoss) },
+        });
+        main.Aliases.Add(new QuestAlias
+        {
+            ID = ABoss3, Type = QuestAlias.TypeEnum.Reference, Name = "Boss3",
+            Flags = QuestAlias.Flag.Optional | QuestAlias.Flag.AllowDead | QuestAlias.Flag.AllowDisabled,
+            Location = new LocationAliasReference { AliasID = ALoc3, RefType = N<ILocationReferenceTypeGetter>(RefTypeBoss) },
+        });
         main.NextAliasID = (uint)main.Aliases.Count;
         main.VirtualMachineAdapter = Vmad.QuestAdapter(Vmad.Script("LOA_MainScript",
+                Vmad.AliasList("Thralls", qMain, AThrall1, AThrall2, AThrall3), Vmad.AliasList("BossSpots", qMain, ABoss1, ABoss2, ABoss3),
+                Vmad.Obj("LOA_Shard1", shard1.FormKey), Vmad.Obj("LOA_Shard2", shard2.FormKey), Vmad.Obj("LOA_Shard3", shard3.FormKey),
                 Vmad.Alias("Aulus", qMain, AAulus), Vmad.AliasList("Shards", qMain, AShard1, AShard2, AShard3), Vmad.Alias("Collector", qMain, ACollector),
                 Vmad.Obj("LOA_State", gState), Vmad.Obj("LOA_ShardsFound", gShards), Vmad.Obj("LOA_ShardsTotal", gShardsTotal), Vmad.Obj("LOA_DestroyGold", gGold),
                 Vmad.Obj("LOA_AmuletBound", amulet0.FormKey), Vmad.Obj("LOA_AmuletAshen", amuletA.FormKey), Vmad.Obj("LOA_LedgerBreaker", axe.FormKey),
                 Vmad.Obj("LOA_Absolution", absolution), Vmad.Obj("LOA_MsgStir", msgStir), Vmad.Obj("LOA_CollectorFaction", collectors.FormKey),
                 Vmad.Obj("PlayerFaction", PlayerFaction), Vmad.Obj("Gold001", Gold001)))
             .WithAliasScripts(qMain, APage, Vmad.Script("LOA_PageAliasScript"))
+            .WithAliasScripts(qMain, AThrall1, Vmad.Script("LOA_ThrallAliasScript", Vmad.Int("Index", 1)))
+            .WithAliasScripts(qMain, AThrall2, Vmad.Script("LOA_ThrallAliasScript", Vmad.Int("Index", 2)))
+            .WithAliasScripts(qMain, AThrall3, Vmad.Script("LOA_ThrallAliasScript", Vmad.Int("Index", 3)))
             .WithAliasScripts(qMain, AShard1, Vmad.Script("LOA_ShardAliasScript", Vmad.Int("Index", 1)))
             .WithAliasScripts(qMain, AShard2, Vmad.Script("LOA_ShardAliasScript", Vmad.Int("Index", 2)))
             .WithAliasScripts(qMain, AShard3, Vmad.Script("LOA_ShardAliasScript", Vmad.Int("Index", 3)))
@@ -153,6 +178,9 @@ internal static class ModInfo
         var tStatus = k.TopTopic("LOA_A_Status", qMain, T.TopicStatus, sAulus);
         k.Info(tStatus, "LOA_A_Status10", T.Status10, new[] { isAulus, St(CompareOperator.EqualTo, 10) });
         k.Info(tStatus, "LOA_A_Status20", T.Status20, new[] { isAulus, St(CompareOperator.EqualTo, 20) });
+        // 0.1.1: unstick for saves where a thrall died without its shard (works on 0.1.0 saves).
+        var tRecover = k.TopTopic("LOA_A_Recover", qMain, T.TopicRecover, sAulus);
+        k.Info(tRecover, "LOA_A_RecoverInfo", T.Recover, new[] { isAulus, St(CompareOperator.GreaterThanOrEqualTo, 10), St(CompareOperator.LessThan, 30) }, goodbye: true, fragment: "LOA_TIF_Recover");
         k.Info(tStatus, "LOA_A_Status40", T.Status40, new[] { isAulus, St(CompareOperator.EqualTo, 40) });
 
         // The choice
@@ -214,6 +242,8 @@ internal static class T
     public static readonly string[] Decline = { "Nobody does. That never stopped one from coming due." };
 
     public const string TopicStatus = "About the shards...";
+    public const string TopicRecover = "I killed a thrall, but it had no shard.";
+    public static readonly string[] Recover = { "The ledger keeps what it's owed. Hold still. There. Whatever the dead were carrying, the ash gives it back to you now." };
     public static readonly string[] Status10 = { "Read the page. The ash will show you where the thralls went to ground." };
     public static readonly string[] Status20 = { "Three shards, three thralls, three holds. The amulet grows heavier near them. Trust it." };
     public static readonly string[] Status40 = { "The Collector came for what you forged. Kill it before it collects you." };

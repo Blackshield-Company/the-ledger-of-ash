@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented here. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.1] - 2026-10-11
+
+Still early beta, not yet playtested in game.
+
+### Fixed
+- A shard could be missing from its ash thrall, so the quest could never collect all three. The quest now gives each thrall its shard by script when it starts, and checks again when a thrall loads and when it dies. Shards you already carry count right away.
+- Stuck saves (0.1.0): tell Aulus "I killed a thrall, but it had no shard." He hands over the shard of every dead thrall that never dropped one and the quest continues. Living thralls keep theirs.
+
+### Changed
+- The thralls now wait at their dungeons' boss spots instead of the outdoor map markers (dungeons without one keep the marker).
+
 ## [0.1.0] - 2026-10-07
 
 Early beta. First public release. It passes every automated check in the build (Papyrus compile, plugin and dialogue validation, round trip, voice file and SEQ checks, FOMOD schema, 15-plugin series compatibility check) but has not been playtested in-game yet.

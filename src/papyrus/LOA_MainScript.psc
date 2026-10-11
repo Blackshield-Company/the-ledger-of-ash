@@ -18,6 +18,12 @@ Message Property LOA_MsgStir Auto
 Faction Property LOA_CollectorFaction Auto
 Faction Property PlayerFaction Auto
 MiscObject Property Gold001 Auto
+ReferenceAlias[] Property Thralls Auto
+ReferenceAlias[] Property BossSpots Auto
+{Optional: each shard dungeon's boss spot.}
+Form Property LOA_Shard1 Auto
+Form Property LOA_Shard2 Auto
+Form Property LOA_Shard3 Auto
 
 Bool[] Found
 Bool PendingStop = False
@@ -31,7 +37,65 @@ Function Begin(ObjectReference akAulus)
 	UpdateCurrentInstanceGlobal(LOA_ShardsFound)
 	Game.GetPlayer().AddItem(LOA_AmuletBound, 1)
 	SetStage(10)
+	Int i = 0
+	While i < 3
+		PlaceAtBoss(Thralls[i], BossSpots[i])
+		i += 1
+	EndWhile
+	EnsureShards()
 	SetObjectiveDisplayed(10)
+EndFunction
+
+Form Function ShardBase(Int aiIndex)
+	If aiIndex == 1
+		Return LOA_Shard1
+	ElseIf aiIndex == 2
+		Return LOA_Shard2
+	EndIf
+	Return LOA_Shard3
+EndFunction
+
+; 0.1.1: at quest start, and when a thrall loads or dies.
+Function EnsureShards()
+	If GetStage() < 10 || GetStage() >= 30
+		Return
+	EndIf
+	If !Found
+		Found = new Bool[4]
+	EndIf
+	Actor player = Game.GetPlayer()
+	Int i = 1
+	While i <= 3
+		If !Found[i]
+			If player.GetItemCount(ShardBase(i)) > 0
+				ShardTaken(i)
+			Else
+				EnsureOn(Thralls[i - 1], Shards[i - 1], ShardBase(i))
+			EndIf
+		EndIf
+		i += 1
+	EndWhile
+EndFunction
+
+; 0.1.1: Aulus's "the thrall had no shard" dialogue: hand over the shard of every dead (or missing) thrall.
+Function RecoverShards()
+	If GetStage() < 10 || GetStage() >= 30
+		Return
+	EndIf
+	EnsureShards()
+	Int given = 0
+	Int i = 1
+	While i <= 3
+		If !Found[i] && Lost(Thralls[i - 1], ShardBase(i))
+			GiveToPlayer(Shards[i - 1], ShardBase(i))
+			ShardTaken(i)
+			given += 1
+		EndIf
+		i += 1
+	EndWhile
+	If given == 0
+		Debug.Notification("No shard is missing. The thralls still carry them.")
+	EndIf
 EndFunction
 
 Function PageRead()
@@ -173,3 +237,56 @@ Event OnUpdate()
 		Stop()
 	EndIf
 EndEvent
+
+; ---------------------------------------------------------------------------
+; 0.1.1: alias-created quest items could be missing from the NPC that should carry them
+; (same bug as Champion's Reforge 0.1.0 / The Gray-Mane Debt 0.1.0). These re-add them by script.
+; ---------------------------------------------------------------------------
+
+; Make sure akHolder carries akBase (unless the player already has it).
+Function EnsureOn(ReferenceAlias akHolder, ReferenceAlias akItem, Form akBase)
+	Actor h = akHolder.GetReference() as Actor
+	If !h || !akBase || Game.GetPlayer().GetItemCount(akBase) > 0 || h.GetItemCount(akBase) > 0
+		Return
+	EndIf
+	ObjectReference r = akItem.GetReference()
+	If !r
+		r = h.PlaceAtMe(akBase, 1, True)
+		akItem.ForceRefTo(r)
+	EndIf
+	h.AddItem(r, 1, True)
+	Debug.Trace("LOA_ EnsureOn: re-added " + akBase + " to " + h)
+EndFunction
+
+; Hand akBase straight to the player (unstick path). The item alias's own pickup event then advances the quest.
+Function GiveToPlayer(ReferenceAlias akItem, Form akBase)
+	Actor player = Game.GetPlayer()
+	If !akBase || player.GetItemCount(akBase) > 0
+		Return
+	EndIf
+	ObjectReference r = akItem.GetReference()
+	If !r
+		r = player.PlaceAtMe(akBase, 1, True)
+		akItem.ForceRefTo(r)
+	EndIf
+	player.AddItem(r, 1)
+	Debug.Trace("LOA_ GiveToPlayer: " + akBase)
+EndFunction
+
+; True when the carrier is dead or gone and no longer has the item.
+Bool Function Lost(ReferenceAlias akHolder, Form akBase)
+	Actor h = akHolder.GetReference() as Actor
+	Return !h || (h.IsDead() && h.GetItemCount(akBase) == 0)
+EndFunction
+
+; Move a spawned NPC from the outdoor map marker to the location's boss spot, if it has one.
+Function PlaceAtBoss(ReferenceAlias akActor, ReferenceAlias akSpot)
+	Actor a = akActor.GetReference() as Actor
+	ObjectReference spot = akSpot.GetReference()
+	If a && spot && !a.IsDead()
+		a.MoveTo(spot)
+		Debug.Trace("LOA_ moved " + a + " to the boss spot")
+	ElseIf a
+		Debug.Trace("LOA_ no boss spot for " + a + "; stays at the map marker")
+	EndIf
+EndFunction

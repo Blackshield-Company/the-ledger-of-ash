@@ -1,24 +1,24 @@
 # Nexus Mods page: The Ledger of Ash
 
-Early beta: v0.1.0 passed every automated build check but hasn't been playtested in-game. Exact upload-form values are in [NEXUS_FIELDS.md](NEXUS_FIELDS.md).
+Early beta: v0.1.1 passed every automated build check but hasn't been playtested in-game. Exact upload-form values are in [NEXUS_FIELDS.md](NEXUS_FIELDS.md).
 
 ## Page settings
 
 - **Game:** Skyrim Special Edition
 - **Mod name:** The Ledger of Ash
-- **Version:** 0.1.0 (early beta)
+- **Version:** 0.1.1 (early beta)
 - **Category:** Quests and Adventures
 - **Suggested tags:** Quests, Lore-Friendly, Daedric, Dialogue, Choices and Consequences, Jewelry, Weapons, ESL, No SKSE, Scripted
 - **Requirements:** none.
 - **Permissions (suggested):** source on GitHub under MIT; allow modification with credit, no re-uploads of the archive.
-- **File to upload:** `LedgerOfAsh-0.1.0.zip` (FOMOD), main file, named "The Ledger of Ash".
+- **File to upload:** `LedgerOfAsh-0.1.1.zip` (FOMOD), main file, named "The Ledger of Ash".
 
 ## Description (paste into the BBCode editor)
 
 Same text as `nexus/loa-description.txt` in the workspace:
 
 ```bbcode
-[center][color=#e06c3c][b]EARLY RELEASE (v0.1.0)[/b]: new mod, not yet widely playtested. Please report bugs in the Bugs tab with your Papyrus log lines (grep LOA_). Source: [url=https://github.com/synthalorian/the-ledger-of-ash]GitHub[/url][/color][/center]
+[center][color=#e06c3c][b]EARLY RELEASE (v0.1.1)[/b]: new mod, not yet widely playtested. Please report bugs in the Bugs tab with your Papyrus log lines (grep LOA_). Source: [url=https://github.com/synthalorian/the-ledger-of-ash]GitHub[/url][/color][/center]
 
 [center][size=6][b]THE LEDGER OF ASH[/b][/size]
 [size=3][i]A page torn from the Daedric Ledger. Three debts sealed in soul-glass. Three thralls who would rather keep them.[/i][/size][/center]
@@ -26,7 +26,7 @@ Same text as `nexus/loa-description.txt` in the workspace:
 [line]
 
 [size=4][b]Summary[/b][/size]
-[b]Status: Early beta (v0.1.0).[/b] Every automated build check passes, but it hasn't had wide in-game playtesting yet. It's playable now. Bug reports help shape 0.1.x.
+[b]Status: Early beta (v0.1.1).[/b] Every automated build check passes, but it hasn't had wide in-game playtesting yet. It's playable now. Bug reports help shape 0.1.x.
 A relic hunt for the Daedric Ledger theme of the series. [b]Aulus Ledger-Keeper[/b] waits by the [b]Riften Stables[/b] with a burnt copy of the Ledger: a page was torn out and fed to the fire, and the three debts it held are sealed in shards of soul-glass, carried off by thralls.
 
 [size=4][b]The quest[/b][/size]
