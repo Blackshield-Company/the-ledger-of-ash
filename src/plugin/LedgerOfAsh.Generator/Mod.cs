@@ -104,7 +104,7 @@ internal static class ModInfo
 
         main.Aliases.Add(Player(APlayer));
         main.Aliases.Add(new QuestAlias { ID = AAulus, Type = QuestAlias.TypeEnum.Reference, Name = "Aulus", Flags = QuestAlias.Flag.Optional | QuestAlias.Flag.StoresText });
-        main.Aliases.Add(Created(APage, "Page", page.FormKey, APlayer, true, Level.Easy, 0));
+        main.Aliases.Add(Created(APage, "Page", page.FormKey, APlayer, true, Level.Easy, QuestAlias.Flag.StoresText | QuestAlias.Flag.UsesStoredText));
         main.Aliases.Add(Dungeon(ALoc1, "Loc1", east.FormKey, LocTypeDraugrCrypt));
         main.Aliases.Add(MarkerOf(AMark1, "Mark1", ALoc1));
         main.Aliases.Add(Created(AThrall1, "Thrall1", thrall1.FormKey, AMark1, false, Level.Hard, QuestAlias.Flag.StoresText));

@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented here. Versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] - 2026-10-14
+
+Still early beta, not yet playtested in game. Save-compatible (no records added or removed, no form IDs changed).
+
+### Fixed
+- The Torn Ledger Page showed raw location tags (`<Alias=Loc1>`, `<Alias=Loc2>`, `<Alias=Loc3>`) instead of the three places. The page now uses the quest's stored text.
+
+### Changed
+- The build check now fails on any `<Alias=...>` tag in dialogue (responses, prompts, topic text) or quest text (name, journal, objectives) that is not a filled, non-optional alias of the quest that owns the text, and on alias-created notes whose tags would not resolve.
+
 ## [0.1.1] - 2026-10-11
 
 Still early beta, not yet playtested in game.
