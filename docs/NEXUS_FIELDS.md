@@ -4,7 +4,7 @@ Game: Skyrim Special Edition
 
 Mod name: The Ledger of Ash
 
-Version: 0.1.1 (early beta)
+Version: 0.1.2 (early beta)
 
 Category: Quests and Adventures
 
@@ -12,9 +12,9 @@ Short summary (227 chars):
 A Daedric relic hunt tied to the Ledger: track debt-shards across three holds, then bind them into an amulet, forge them into an axe and face the Collector, or break them. Unvoiced dialogue. Base game, ESL, no SKSE. Early beta.
 
 Main file:
-- File: LedgerOfAsh-0.1.1.zip (FOMOD installer)
+- File: LedgerOfAsh-0.1.2.zip (FOMOD installer)
 - File name: The Ledger of Ash
-- File version: 0.1.1
+- File version: 0.1.2
 - File category: Main Files
 - File description: Early beta. FOMOD installer with LedgerOfAsh.esp (ESL-flagged), compiled scripts, SEQ file, silent voice files for the unvoiced dialogue, and optional Papyrus sources. Requires only Skyrim Special Edition / Anniversary Edition (1.5.97 or 1.6.x).
 
