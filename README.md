@@ -1,3 +1,5 @@
+![the-ledger-of-ash](.github/preview.png)
+
 # The Ledger of Ash
 
 *A page torn from the Daedric Ledger. Three debts sealed in soul-glass. Three thralls who would rather keep them.*
