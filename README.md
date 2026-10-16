@@ -80,6 +80,13 @@ set LOA_DestroyGold to 800
 
 Current build: 62 new records (FormIDs 800-83D): Armor 2, Book 1, DialogBranch 4, DialogResponses 15, DialogTopic 10, Faction 2, FormList 3, GlobalFloat 7, MagicEffect 1, Message 2, MiscItem 3, Npc 5, ObjectEffect 3, Quest 2, Spell 1, Weapon 1; 11 Papyrus scripts; 24 silent voice files; 1 SEQ entry.
 
+## Support
+
+Donations are optional. Nothing in the mod is gated on them.
+
+- GitHub Sponsors: https://github.com/sponsors/synthalorian
+- Ko-fi: https://ko-fi.com/synthalorian
+
 ## Credits
 
 - Built with [Mutagen](https://github.com/Mutagen-Modding/Mutagen) and [russo-2025/papyrus-compiler](https://github.com/russo-2025/papyrus-compiler).
