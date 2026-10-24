@@ -35,4 +35,4 @@ Permissions (suggestion; code is MIT on GitHub):
 Tags (pick the closest matches in the tag picker):
 Quests, Lore-Friendly, Daedric, Dialogue, Choices and Consequences, Jewelry, Weapons, ESL, No SKSE, Scripted
 
-Source: https://github.com/synthalorian/the-ledger-of-ash
+Source: https://github.com/Blackshield-Company/the-ledger-of-ash
