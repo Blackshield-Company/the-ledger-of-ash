@@ -18,7 +18,7 @@ Early beta: v0.1.2 passed every automated build check but hasn't been playtested
 Same text as `nexus/loa-description.txt` in the workspace:
 
 ```bbcode
-[center][color=#e06c3c][b]EARLY RELEASE (v0.1.2)[/b]: new mod, not yet widely playtested. Please report bugs in the Bugs tab with your Papyrus log lines (grep LOA_). Source: [url=https://github.com/synthalorian/the-ledger-of-ash]GitHub[/url][/color][/center]
+[center][color=#e06c3c][b]EARLY RELEASE (v0.1.2)[/b]: new mod, not yet widely playtested. Please report bugs in the Bugs tab with your Papyrus log lines (grep LOA_). Source: [url=https://github.com/Blackshield-Company/the-ledger-of-ash]GitHub[/url][/color][/center]
 
 [center][size=6][b]THE LEDGER OF ASH[/b][/size]
 [size=3][i]A page torn from the Daedric Ledger. Three debts sealed in soul-glass. Three thralls who would rather keep them.[/i][/size][/center]
@@ -93,7 +93,7 @@ Install with [b]Mod Organizer 2[/b] or [b]Vortex[/b] (FOMOD installer) and enabl
 As with any scripted mod, finish the quest before removing it.
 
 [size=4][b]Source[/b][/size]
-Open source (MIT): [url=https://github.com/synthalorian/the-ledger-of-ash]github.com/synthalorian/the-ledger-of-ash[/url]
+Open source (MIT): [url=https://github.com/Blackshield-Company/the-ledger-of-ash]github.com/Blackshield-Company/the-ledger-of-ash[/url]
 
 [size=4][b]Credits[/b][/size]
 [list]
